@@ -4,8 +4,6 @@ set(PNAME "main")
 
 project("To Do List")
 
-#set(CMAKE_SHARED_LIBRARY_LINK_C_FLAGS "")
-#set(CMAKE_SHARED_LIBRARY_LINK_CXX_FLAGS "")
 set (VERSION_MAJOR 1)
 set (VERSION_MINOR 0)
 
