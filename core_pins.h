@@ -32,7 +32,7 @@
 #define _core_pins_h_
 
 #include "kinetis.h"
-#include "pins_arduino.h"
+//#include "pins_arduino.h"
 
 
 #define HIGH		1
@@ -1145,6 +1145,7 @@ void digitalWrite(uint8_t pin, uint8_t val);
 static inline void digitalWriteFast(uint8_t pin, uint8_t val) __attribute__((always_inline, unused));
 static inline void digitalWriteFast(uint8_t pin, uint8_t val)
 {
+#if 0
 	if (__builtin_constant_p(pin)) {
 		if (val) {
 			if (pin == 0) {
@@ -1330,12 +1331,14 @@ static inline void digitalWriteFast(uint8_t pin, uint8_t val)
 			*portClearRegister(pin) = digitalPinToBitMask(pin);
 		}
 	}
+#endif
 }
 
 uint8_t digitalRead(uint8_t pin);
 static inline uint8_t digitalReadFast(uint8_t pin) __attribute__((always_inline, unused));
 static inline uint8_t digitalReadFast(uint8_t pin)
 {
+#if 0
 	if (__builtin_constant_p(pin)) {
 		if (pin == 0) {
 			return (CORE_PIN0_PINREG & CORE_PIN0_BITMASK) ? 1 : 0;
@@ -1434,6 +1437,9 @@ static inline uint8_t digitalReadFast(uint8_t pin)
 		return (*portInputRegister(pin) & digitalPinToBitMask(pin)) ? 1 : 0;
 		#endif
 	}
+#else
+    return 0;
+#endif
 }
 
 
@@ -1535,36 +1541,11 @@ uint32_t micros(void);
 static inline void delayMicroseconds(uint32_t) __attribute__((always_inline, unused));
 static inline void delayMicroseconds(uint32_t usec)
 {
-#if F_CPU == 168000000
-	uint32_t n = usec * 56;
-#elif F_CPU == 144000000
-	uint32_t n = usec * 48;
-#elif F_CPU == 120000000
-	uint32_t n = usec * 40;
-#elif F_CPU == 96000000
-	uint32_t n = usec << 5;
-#elif F_CPU == 72000000
-	uint32_t n = usec * 24;
-#elif F_CPU == 48000000
 	uint32_t n = usec << 4;
-#elif F_CPU == 24000000
-	uint32_t n = usec << 3;
-#elif F_CPU == 16000000
-	uint32_t n = usec << 2;
-#elif F_CPU == 8000000
-	uint32_t n = usec << 1;
-#elif F_CPU == 4000000
-	uint32_t n = usec;
-#elif F_CPU == 2000000
-	uint32_t n = usec >> 1;
-#endif
     // changed because a delay of 1 micro Sec @ 2MHz will be 0
 	if (n == 0) return;
 	__asm__ volatile(
 		"L_%=_delayMicroseconds:"		"\n\t"
-#if F_CPU < 24000000
-		"nop"					"\n\t"
-#endif
 #ifdef KINETISL
 		"sub    %0, #1"				"\n\t"
 #else
