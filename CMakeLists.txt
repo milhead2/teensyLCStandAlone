@@ -20,7 +20,7 @@ set(CMAKE_CXX_FLAGS_COMMON "-std=gnu++0x -felide-constructors -fno-exceptions -f
 set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_C_FLAGS_DEBUG} ${CMAKE_CXX_FLAGS_COMMON}")
 set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_C_FLAGS_RELEASE} ${CMAKE_CXX_FLAGS_COMMON}")
 
-set(CMAKE_EXE_LINKER_FLAGS_COMMON "-Os -Wl,--gc-sections,--defsym=__rtc_localtime=0 --specs=nano.specs")
+set(CMAKE_EXE_LINKER_FLAGS_COMMON "-Os -Wl,--gc-sections,--defsym=__rtc_localtime=0 --specs=nano.specs MKL03Z32xxx4_flash.ld -static")
 set(CMAKE_EXE_LINKER_FLAGS_COMMON "${CMAKE_EXE_LINKER_FLAGS_COMMON} -mcpu=cortex-m4 -mthumb -T${MCU_LD}")
 
 set(CMAKE_EXE_LINKER_FLAGS_DEBUG "${CMAKE_EXE_LINKER_FLAGS_DEBUG} ${CMAKE_EXE_LINKER_FLAGS_COMMON}")
